@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Receptionist - Fixed Memory</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa 0%, #bbdefb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      width: 100%;
+
+      max-width: 500px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(33, 150, 243, 0.15);
+      overflow: hidden;
+    }
+    
+    .header {
+      background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+    
+    .header h1 {
+      font-size: 1.5rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .status-indicator {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 12px;
+      height: 12px;
+      background: #4caf50;
+      border-radius: 50%;
+    }
+    
+    #messages {
+      height: 400px;
+      overflow-y: auto;
+      padding: 20px;
+      background: #fafafa;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .msg {
+      padding: 12px 16px;
+      border-radius: 18px;
+      margin: 8px 0;
+      max-width: 80%;
+      word-wrap: break-word;
+      animation: fadeIn 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .user {
+      background: #1976d2;
+      color: white;
+      margin-left: auto;
+      border-bottom-right-radius: 5px;
+    }
+    
+    .bot {
+      background: #e8eaf6;
+      color: #333;
+      margin-right: auto;
+      border-bottom-left-radius: 5px;
+    }
+    
+    .system {
+      background: #ffecb3;
+      color: #7d6608;
+      margin: 8px auto;
+      border-radius: 8px;
+      font-size: 14px;
+      text-align: center;
+      max-width: 90%;
+    }
+    
+    .typing-indicator {
+      background: #e8eaf6;
+      color: #666;
+      padding: 12px 16px;
+      border-radius: 18px;
+      margin: 8px 0;
+      width: fit-content;
+      display: none;
+    }
+    
+    .typing-indicator span {
+      height: 8px;
+      width: 8px;
+      background: #666;
+      border-radius: 50%;
+      display: inline-block;
+      margin: 0 2px;
+      opacity: 0.6;
+      animation: bounce 1.3s infinite ease-in-out;
+    }
+    
+    .typing-indicator span:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+    
+    .typing-indicator span:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+    
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-5px); }
+    }
+    
+    #chatForm {
+      display: flex;
+      padding: 15px;
+      background: white;
+      border-top: 1px solid #eee;
+    }
+    
+    input {
+      flex: 1;
+      padding: 12px 15px;
+      border-radius: 25px;
+      border: 1px solid #ddd;
+      outline: none;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    
+    input:focus {
+      border-color: #1976d2;
+      box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+    }
+    
+    button {
+      padding: 12px 20px;
+      margin-left: 10px;
+      background: #1976d2;
+      border: none;
+      color: white;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    
+    button:hover {
+      background: #1565c0;
+    }
+    
+    .info {
+      text-align: center;
+      padding: 10px;
+      font-size: 12px;
+      color: #666;
+      background: #f5f5f5;
+    }
+    
+    .quick-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 10px 15px;
+      background: #f9f9f9;
+      border-top: 1px solid #eee;
+    }
+    
+    .quick-btn {
+      padding: 8px 12px;
+      background: #e3f2fd;
+      border: 1px solid #bbdefb;
+      border-radius: 16px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .quick-btn:hover {
+      background: #bbdefb;
+      transform: translateY(-2px);
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        border-radius: 10px;
+      }
+      
+      #messages {
+        height: 350px;
+      }
+      
+      .msg {
+        max-width: 85%;
+      }
+      
+      .quick-buttons {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-hospital"></i> Hospital Receptionist</h1>
+      <div class="status-indicator"></div>
+    </div>
+    
+    <div id="messages">
+      <div class="msg bot">Hello! I'm your virtual hospital receptionist. How can I help you today?</div>
+      <div class="msg bot">You can ask me about appointment booking, doctor availability, visiting hours, or general inquiries.</div>
+    </div>
+    
+    <div class="typing-indicator" id="typing">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    
+    <div class="quick-buttons">
+      <button class="quick-btn" data-msg="I need to book an appointment"><i class="fas fa-calendar-check"></i> Book Appointment</button>
+      <button class="quick-btn" data-msg="What are your visiting hours?"><i class="fas fa-clock"></i> Visiting Hours</button>
+    </div>
+    
+    <form id="chatForm">
+      <input type="text" id="message" placeholder="Type your message..." required autocomplete="off">
+      <button type="submit"><i class="fas fa-paper-plane"></i></button>
+    </form>
+    
+    <div class="info">
+      <i class="fas fa-shield-alt"></i> Your conversations are secure and private
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById("chatForm");
+    const input = document.getElementById("message");
+    const messages = document.getElementById("messages");
+    const typingIndicator = document.getElementById("typing");
+    const quickButtons = document.querySelectorAll('.quick-btn');
+
+    // Generate or retrieve session ID
+    let sessionId = localStorage.getItem("chatSessionId");
+    if (!sessionId) {
+      sessionId = 'session_' + Math.random().toString(36).substr(2, 9);
+      localStorage.setItem("chatSessionId", sessionId);
+    }
+
+    // Initial focus on input
+    input.focus();
+
+    function addMessage(text, sender) {
+      const div = document.createElement("div");
+      div.className = `msg ${sender}`;
+      div.textContent = text;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      typingIndicator.style.display = 'block';
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function hideTypingIndicator() {
+      typingIndicator.style.display = 'none';
+    }
+
+    // Fixed version of your sendToWebhook function
+    async function sendToWebhook(userMsg) {
+      showTypingIndicator();
+      
+      try {
+        // Using your n8n webhook URL with proper session ID handling
+        const res = await fetch("https://pragannisha.app.n8n.cloud/webhook/9ba8f567-f736-4341-98cd-bf2630ac1383", {
+          method: "POST",
+          headers: { 
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ 
+            message: userMsg, 
+            sessionId: sessionId 
+          }),
+        });
+        
+        if (!res.ok) {
+          throw new Error(`Server responded with ${res.status}`);
+        }
+        
+        const data = await res.json();
+        hideTypingIndicator();
+        
+        // Handle the specific response format from n8n
+        if (data && data.output) {
+          addMessage(data.output, "bot");
+        } else if (Array.isArray(data) && data.length > 0 && data[0].output) {
+          addMessage(data[0].output, "bot");
+        } else if (data.response) {
+          addMessage(data.response, "bot");
+        } else if (data.reply) {
+          addMessage(data.reply, "bot");
+        } else if (data.message) {
+          addMessage(data.message, "bot");
+        } else {
+          addMessage("I'm not sure how to respond to that. Please try rephrasing your question.", "bot");
+        }
+      } catch (err) {
+        hideTypingIndicator();
+        addMessage("Sorry, I'm having trouble connecting right now. Please try again in a moment.", "bot");
+        console.error("Chat error:", err);
+        
+        
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const userMsg = input.value.trim();
+      
+      if (!userMsg) return;
+      
+      addMessage(userMsg, "user");
+      input.value = "";
+      
+      // Send message to webhook
+      await sendToWebhook(userMsg);
+    });
+
+    // Add quick button functionality
+    quickButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const msg = button.getAttribute('data-msg');
+        input.value = msg;
+        form.dispatchEvent(new Event('submit'));
+      });
+    });
+
+    // Allow sending message with Enter key
+    input.addEventListener("keypress", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        form.dispatchEvent(new Event("submit"));
+      }
+    });
+  </script>
+</body>
+</html>
