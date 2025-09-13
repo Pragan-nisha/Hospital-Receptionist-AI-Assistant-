@@ -8,14 +8,14 @@ An AI-powered medical receptionist built with n8n, AI Agent, Docker, and Render,
 
 ## 🚀 Features
   
--  ✅ Collects all required details for booking appointments:
-  Patient Name
-  Mobile Number (10 digits)
-  Email Address
-  Doctor’s Name & Specialization
-  Hospital/Clinic Name
-  Location (City/Area)
-  Appointment Date & Time
+  ✅ Collects all required details for booking appointments:
+         - Patient Name
+         - Mobile Number (10 digits)
+         - Email Address
+         - Doctor’s Name & Specialization
+         - Hospital/Clinic Name
+         - Location (City/Area)
+         - Appointment Date & Time
   
   ✅ Behaves like a friendly receptionist (remembers details, avoids repeating, validates inputs).
   
@@ -30,6 +30,7 @@ An AI-powered medical receptionist built with n8n, AI Agent, Docker, and Render,
 ---
 
 ## 📦 Running Locally with Docker
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/<your-username>/hospital_receptionist.git
@@ -37,17 +38,17 @@ An AI-powered medical receptionist built with n8n, AI Agent, Docker, and Render,
 
    ```
 
-2.Build the Docker image:
-```bash
-  docker build -t hospital_receptionist .
-```
-
-3.Run the container:
-```bash
-docker run -d -p 8080:80 hospital_receptionist
-```
-
-4.Open in browser:
-```bash
-👉 http://localhost:8080
-```
+  2.Build the Docker image:
+  ```bash
+    docker build -t hospital_receptionist .
+  ```
+  
+  3.Run the container:
+  ```bash
+  docker run -d -p 8080:80 hospital_receptionist
+  ```
+  
+  4.Open in browser:
+  ```bash
+  👉 http://localhost:8080
+  ```
