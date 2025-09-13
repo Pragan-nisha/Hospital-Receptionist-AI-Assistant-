@@ -17,22 +17,26 @@ An AI-powered medical receptionist built with n8n, AI Agent, Docker, and Render,
   Location (City/Area)
   Appointment Date & Time
   
--  ✅ Behaves like a friendly receptionist (remembers details, avoids repeating, validates inputs).
--  ✅ Stores patient details securely in Airtable.
--  ✅ Automatically adds confirmed appointments into the clinic’s calendar (Google Calendar/Outlook compatible).
--  ✅ Dockerized & hosted on Render for quick deployment.
--  ✅ Provides a demo chat interface that feels natural and conversational.  
+  ✅ Behaves like a friendly receptionist (remembers details, avoids repeating, validates inputs).
+  
+  ✅ Stores patient details securely in Airtable.
+  
+  ✅ Automatically adds confirmed appointments into the clinic’s calendar (Google Calendar/Outlook compatible).
+  
+  ✅ Dockerized & hosted on Render for quick deployment.
+  
+  ✅ Provides a demo chat interface that feels natural and conversational.  
 
 ---
 
 ## 📦 Running Locally with Docker
-
 1. Clone the repository:
    ```bash
    git clone https://github.com/<your-username>/hospital_receptionist.git
    cd hospital_receptionist
 
    ```
+
 2.Build the Docker image:
 ```bash
   docker build -t hospital_receptionist .
