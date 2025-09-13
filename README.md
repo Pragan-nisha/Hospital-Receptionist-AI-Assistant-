@@ -31,7 +31,8 @@ An AI-powered medical receptionist built with n8n, AI Agent, Docker, and Render,
 
 ## 📦 Running Locally with Docker
 
-1. Clone the repository:
+  1.Clone the repository:
+     
    ```bash
    git clone https://github.com/<your-username>/hospital_receptionist.git
    cd hospital_receptionist
